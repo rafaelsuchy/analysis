@@ -14,7 +14,7 @@ dependencies:
   - pygraphviz>=1.5
   - doc8
   - deepdiff
-  - estimagic>=0.0.9
+  - estimagic=0.0.25
   - jupyterlab
   - matplotlib>=3.0.0
   - mkl
