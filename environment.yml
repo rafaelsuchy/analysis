@@ -23,6 +23,7 @@ dependencies:
   - numpydoc
   - pandas>=0.24
   - pyaml
+  - robupy
   - seaborn
   - numpy
   - pytest
