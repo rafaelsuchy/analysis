@@ -1,4 +1,6 @@
 [submodule "submodules/respy"]
 	path = submodules/respy
-	url = https://github.com/OpenSourceEconomics/respy.git
+	url = https://github.com/structRobustness/respy.git
 	branch = adding_robustness_rafaelsuchy 
+
+
