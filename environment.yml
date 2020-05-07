@@ -17,6 +17,7 @@ dependencies:
   - estimagic>=0.0.27
   - jupyterlab
   - matplotlib>=3.0.0
+  - mpi4py
   - mkl
   - nbsphinx=0.4.2
   - numba>=0.43.1
