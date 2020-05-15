@@ -16,6 +16,7 @@ from functools import partial
 import multiprocessing as mp
 import numpy as np
 import pandas as pd
+import respy as rp
 
 
 #from robustness_library import AMBIGUITY_VALUES
@@ -60,7 +61,12 @@ def main():
 
     # MPI processing
     num_proc, is_distributed = 2, True
-    dfs_ambiguity = distribute_tasks(simulate, tasks, num_proc, is_distributed)
+    dfs_ambiguity = distribute_tasks(
+        simulate_func_partial,
+        tasks,
+        num_proc,
+        is_distributed
+        )
 
 
 
