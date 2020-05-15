@@ -59,6 +59,8 @@ def main():
     # Partial out function arguments that remain unchanged
     simulate_func_partial = partial(simulate_func, options)
 
+    # IMPORTANT: $ mpiexec -n 1 -usize 3 python run_robustness.py
+    # IMPORTANT: $ mpiexec.hydra -n 1 -usize 3 python run_robustness.py
     # MPI processing
     num_proc, is_distributed = 2, True
     dfs_ambiguity = distribute_tasks(
