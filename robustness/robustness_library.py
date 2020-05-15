@@ -1,3 +1,5 @@
+"""This module contains functions needed for the robustness analysis. """
+
 import os
 import warnings
 from pathlib import Path
