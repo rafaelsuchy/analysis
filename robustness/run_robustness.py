@@ -43,6 +43,7 @@ NUM_AGENTS = 1000
 
 def main():
 
+
     # Load the example model
     params, options = get_model_specification(MODEL, NUM_AGENTS, NUM_PERIODS, False)
 
@@ -57,14 +58,14 @@ def main():
         tasks.append(params)
 
     # Partial out function arguments that remain unchanged
-    simulate_func_partial = partial(simulate_func, options)
+    # simulate_func_partial = partial(simulate_func)
 
     # IMPORTANT: $ mpiexec -n 1 -usize 3 python run_robustness.py
     # IMPORTANT: $ mpiexec.hydra -n 1 -usize 3 python run_robustness.py
     # MPI processing
-    num_proc, is_distributed = 2, True
+    num_proc, is_distributed = 3, True
     dfs_ambiguity = distribute_tasks(
-        simulate_func_partial,
+        simulate_func,
         tasks,
         num_proc,
         is_distributed
