@@ -1,7 +1,6 @@
 """This script runs the robustness analysis."""
 
 import os
-
 # Automatic parallelism turned off
 parallel_off = {
     "NUMBA_NUM_THREADS": "1",
@@ -13,10 +12,14 @@ parallel_off = {
 os.environ.update(parallel_off)
 
 from functool import partial
-import pandas as pd
-import numpy as np
 
-from robustness_library import AMBIGUITY_VALUES
+import multiprocessing as mp
+import numpy as np
+import pandas as pd
+
+
+#from robustness_library import AMBIGUITY_VALUES
+from robustness_library import get_model_specification
 from robustness_library import get_dict_labels  # should enter module auxiliary functions
 from robustness_library import simulation_ambiguity
 from robustness_library import eval_experiece_effect_ambiguity
@@ -25,32 +28,42 @@ from robustness_library import distribute_tasks
 # Recover path to load the pickle files
 from robustness_library import subdir_robustness
 
-# Define parameters (decide where they should go)
+# Define parametrization (all will go into a "config_robustness.py" later)
+AMBIGUITY_VALUES = {
+    "absent": 0.00,
+    "low": 0.1,
+    "high": 0.2,
+}
+
 YEARS_EDUCATION = 10
+MODEL = "kw_94_two"
 NUM_PERIODS = 40
 NUM_AGENTS = 1000
 
 def main():
 
     # Load the example model
-    # to do: write function for the model specifiction 
-    params, options = rp.get_example_model("kw_94_two")
-
-
-
+    params, options = get_model_specification(MODEL, NUM_AGENTS, NUM_PERIODS, False)
 
     # Core: simulate ambiguity data frames, which are the backbone of the analysis
     # In the following the implementation from simulation_ambiguity will be done with MPI
 
+    # Build the simulate function with baseline ambiguity level
+    simulate_func = rp.get_simulate_func(params, options)
+
     # Create the tasks
     tasks = []
     for ambiguity_value in AMBIGUITY_VALUES.values():
-        params, _ = rp.get_example_model("kw_94_two")
+        params, _ = get_model_specification(MODEL, NUM_AGENTS, NUM_PERIODS, False)
         params.loc[("eta", "eta"), "value"] = ambiguity_value
-        params.loc[("eta", "eta"), "comment"] = "value of the ambiguity set"
         tasks.append(params)
 
-    df_ambiguity = distribute_tasks(simulate, tasks)
+    # Partial out function arguments that remain unchanged
+    simulate_func_partial = partial(simulate_func, options)
+
+    # MPI processing
+    num_proc, is_distributed = 2, True
+    dfs_ambiguity = distribute_tasks(simulate, tasks, num_proc, is_distributed)
 
     # Expected output: list of dataframes
 
