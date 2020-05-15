@@ -12,6 +12,15 @@ parallel_off = {
 os.environ.update(parallel_off)
 
 from functools import partial
+from pathlib import Path
+
+subdir_robustness = Path(
+    f"{os.environ['PROJECT_ROOT']}/uncertainty-propagation"
+)
+
+
+
+
 
 import multiprocessing as mp
 import numpy as np
@@ -43,7 +52,6 @@ NUM_AGENTS = 1000
 
 def main():
 
-
     # Load the example model
     params, options = get_model_specification(MODEL, NUM_AGENTS, NUM_PERIODS, False)
 
@@ -71,6 +79,8 @@ def main():
         is_distributed
         )
 
+    for num in range(0, len(dfs_ambiguity)):
+        dfs_ambiguity[num].to_pickle(f"df_ambiguity_{num}")
 
 
 if __name__ == "__main__":
