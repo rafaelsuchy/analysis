@@ -15,12 +15,8 @@ from functools import partial
 from pathlib import Path
 
 subdir_robustness = Path(
-    f"{os.environ['PROJECT_ROOT']}/uncertainty-propagation"
+    f"{os.environ['PROJECT_ROOT']}/data"
 )
-
-
-
-
 
 import multiprocessing as mp
 import numpy as np
@@ -36,7 +32,7 @@ from robustness_library import eval_experiece_effect_ambiguity
 from robustness_library import eval_eu_loss
 from robustness_library import distribute_tasks
 # Recover path to load the pickle files
-from robustness_library import subdir_robustness
+#from robustness_library import subdir_robustness
 
 # Define parametrization (all will go into a "config_robustness.py" later)
 AMBIGUITY_VALUES = {
@@ -68,8 +64,8 @@ def main():
     # Partial out function arguments that remain unchanged
     # simulate_func_partial = partial(simulate_func)
 
-    # IMPORTANT: $ mpiexec -n 1 -usize 3 python run_robustness.py
-    # IMPORTANT: $ mpiexec.hydra -n 1 -usize 3 python run_robustness.py
+    # IMPORTANT - Ubuntu:   $ mpiexec -n 1 -usize 3 python run_robustness.py
+    # IMPORTANT - MacOS:    $ mpiexec.hydra -n 1 -usize 3 python run_robustness.py
     # MPI processing
     num_proc, is_distributed = 3, True
     dfs_ambiguity = distribute_tasks(
@@ -80,7 +76,7 @@ def main():
         )
 
     for num in range(0, len(dfs_ambiguity)):
-        dfs_ambiguity[num].to_pickle(f"df_ambiguity_{num}")
+        dfs_ambiguity[num].to_pickle(subdir_robustness / f"df_ambiguity_{num}")
 
 
 if __name__ == "__main__":

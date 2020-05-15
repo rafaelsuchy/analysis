@@ -10,9 +10,9 @@ import pandas as pd
 import respy as rp
 
 # Initialize the subdirectory path for reference to pickle files.
-subdir_robustness = Path(
-    f"{os.environ['PROJECT_ROOT']}/uncertainty-propagation"
-)
+#subdir_robustness = Path(
+    #f"{os.environ['PROJECT_ROOT']}/data"
+#)
 
 # Set the ambiguity values that will be considered throughout the project.
 AMBIGUITY_VALUES = {
@@ -80,8 +80,7 @@ def get_dict_labels(dictionary):
     return dict_labels
 
 
-# ToDo: Write a wrapper that loads the model specification
-
+# This part is now in our main function (employed with multiprocessing)
 def simulation_ambiguity(ambiguity_values, model="kw_94_two"):
     """Simulate models under various levels of ambiguity (ambiguity_values).
 
@@ -101,17 +100,14 @@ def simulation_ambiguity(ambiguity_values, model="kw_94_two"):
         params, _ = rp.get_example_model(model, with_data=False)
         # Maybe write a wrapper for params, and just params.copy()
         params.loc[("eta", "eta"), "value"] = ambiguity_value
-        params.loc[("eta", "eta"), "comment"] = "value of the ambiguity set"  # Not really necessary at all
 
         simulate_func = rp.get_simulate_func(params, options)
-        # Debugging
-        # print("Current ambiguity value:", params.loc[("eta", "eta"), "value"], ".")
         dfs_ambiguity.append(simulate(params))
 
     # save as pickle file
     # TODO: need to re-check syntax of this thing)
     for num in range(0, len(df_ambiguity)):
-        dfs_ambiguity[num].to_pickle(subdir_robustness + f"/df_ambiguity_{num}")
+        dfs_ambiguity[num].to_pickle(subdir_robustness / f"/df_ambiguity_{num}")
 
     return dfs_ambiguity
 
