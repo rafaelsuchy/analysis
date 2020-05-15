@@ -9,6 +9,7 @@ dependencies:
   - python=3.7.3
   - pip=19.0.3
   - click
+  - chaospy
   - codecov
   - statsmodels
   - pygraphviz>=1.5
@@ -43,4 +44,3 @@ dependencies:
     - DFO-LS
     - PyPDF2
     - jupyterlab
-    - pygmo
