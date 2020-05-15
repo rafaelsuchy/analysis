@@ -12,6 +12,7 @@ jobs:
     - uses: goanpeca/setup-miniconda@v1.0.2
       with:
            activate-environment: struct_robustness
+           submodules: true
            environment-file: environment.yml
            python-version: 3.7
     - name: placeholder name (suggestion create ambiguity data frames)
@@ -30,6 +31,7 @@ jobs:
     - uses: goanpeca/setup-miniconda@v1.0.2
       with:
         activate-environment: struct_robustness
+        submodules: true
         environment-file: environment.yml
         python-version: 3.7
     - name: testing
