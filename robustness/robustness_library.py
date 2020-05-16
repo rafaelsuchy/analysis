@@ -15,16 +15,17 @@ import respy as rp
 #)
 
 # Set the ambiguity values that will be considered throughout the project.
-AMBIGUITY_VALUES = {
-    "absent": 0.00,
-    "low": 0.1,
-    "high": 0.2,
-}
+# Set them into a config file later
+# AMBIGUITY_VALUES = {
+#    "absent": 0.00,
+#    "low": 0.1,
+#    "high": 0.2,
+#}
 
 # Need to initialize this stuff in a config file (potentially)
-YEARS_EDUCATION = 10
-NUM_PERIODS = 40
-NUM_AGENTS = 1000
+#YEARS_EDUCATION = 10
+#NUM_PERIODS = 40
+#NUM_AGENTS = 1000
 
 
 def get_model_specification(

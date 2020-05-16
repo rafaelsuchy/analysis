@@ -14,6 +14,10 @@ jobs:
            activate-environment: struct_robustness
            environment-file: environment.yml
            python-version: 3.7
+
+    - name: Git Submodules Init
+      uses: chris-short/github-action-git-submodules@v0.1.0
+    
     - name: run robustness
       shell: bash -l {0}
       run: |
@@ -40,4 +44,5 @@ jobs:
         export PATH="$PATH:/usr/share/miniconda/bin"
         source .envrc
         cd robustness
+
 
