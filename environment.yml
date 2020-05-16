@@ -29,6 +29,7 @@ dependencies:
   - numpydoc
   - pandas>=0.24
   - pyaml
+  - pygmo
   - robupy
   - seaborn
   - numpy
@@ -38,6 +39,7 @@ dependencies:
   - restructuredtext_lint
   - scipy>=1.2.1
   - tox-conda
+
   - pip:
     - apprise
     - pre-commit
