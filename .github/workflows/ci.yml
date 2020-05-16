@@ -17,7 +17,7 @@ jobs:
     - name: run robustness
       shell: bash -l {0}
       run: |
-        export PATH="$HOME/miniconda/bin:$PATH"
+        export PATH="$PATH:/usr/share/miniconda/bin"
         source .envrc
         cd robustness
         mpiexec -n 1 -usize 3 python run_robustness.py
@@ -37,7 +37,7 @@ jobs:
     - name: testing
       shell: bash -l {0}
       run: |
-        export PATH="$HOME/miniconda/bin:$PATH"
+        export PATH="$PATH:/usr/share/miniconda/bin"
         source .envrc
         cd robustness
 
