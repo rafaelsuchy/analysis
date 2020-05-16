@@ -21,6 +21,7 @@ jobs:
         export PATH="$PATH:/usr/share/miniconda/bin"
         source .envrc
         cd robustness
+        mpiexec.hydra -n 1 -usize 3 python run_robustness.py
 
   run-tests:
 
