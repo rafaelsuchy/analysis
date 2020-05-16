@@ -3,4 +3,13 @@
 	url = https://github.com/structRobustness/respy.git
 	branch = adding_robustness_rafaelsuchy 
 
+[submodule "submodules/robupy"]
+	path = submodules/robupy
+	url = https://github.com/OpenSourceEconomics/robupy.git
+	branch = master
 
+
+
+[submodule "robupy"]
+	path = robupy
+	url = https://github.com/OpenSourceEconomics/robupy.git
