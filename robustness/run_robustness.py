@@ -37,8 +37,8 @@ from robustness_library import distribute_tasks
 # Define parametrization (all will go into a "config_robustness.py" later)
 AMBIGUITY_VALUES = {
     "absent": 0.00,
-    "low": 0.1,
-    "high": 0.2,
+    "low": 0.01,
+    "high": 0.02,
 }
 
 YEARS_EDUCATION = 10
@@ -76,7 +76,7 @@ def main():
         )
 
     for num in range(0, len(dfs_ambiguity)):
-        dfs_ambiguity[num].to_pickle(subdir_robustness / f"df_ambiguity_{num}")
+        dfs_ambiguity[num].to_pickle(subdir_robustness / f"dfs_ambiguity_{num}.pkl")
 
 
 if __name__ == "__main__":
