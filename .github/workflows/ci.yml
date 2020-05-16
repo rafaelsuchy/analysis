@@ -24,7 +24,7 @@ jobs:
         export PATH="$PATH:/usr/share/miniconda/bin"
         source .envrc
         git submodule init 
-        git submodule checkout 
+        git submodule update 
         cd robustness
         mpiexec -n 1 -usize 3 python run_robustness.py
 
