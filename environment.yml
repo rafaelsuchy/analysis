@@ -30,7 +30,7 @@ dependencies:
   - pandas>=0.24
   - pyaml
   - pygmo
-  - robupy
+#  - robupy
   - seaborn
   - numpy
   - pytest
