@@ -114,7 +114,7 @@ def simulation_ambiguity(ambiguity_values, model="kw_94_two"):
 
 
 # ToDo: Think how to include YEARS_EDUCATION and NUM_PERIODS in a proper way.
-def eval_experiece_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_education, num_periods):
+def eval_experience_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_education, num_periods):
     """Evaluate effects on average years of experience in certain occupations
     when ambiguity is in place.
 
@@ -122,8 +122,8 @@ def eval_experiece_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_educa
         ambiguity_values (dict): Dictionary with various levels of ambiguity
             to be implemented (key = name of scenario).
 
-        dfs_ambiguity (list): List of pd.DataFrame objects that containt the
-            of simulated models.
+        dfs_ambiguity (list): List of pd.DataFrame objects that contain the
+            of simulated models under different sizes of the ambiguity set.
 
     Returns:
         df_yoe_effect_ambiguity (pd.DataFrame): Dataframe that summarizes the
@@ -151,13 +151,13 @@ def eval_experiece_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_educa
         columns={0: "School", 1: "White", 2: "Blue", 3: "Home"}
     )
 
-    # Save data frame
-    df_yoe_effect_ambiguity.to_pickle(subdir_robustness + "/df_yoe_effect_ambiguity")
+    # Save data frame --> will save it in the main function properly
+    # df_yoe_effect_ambiguity.to_pickle(subdir_robustness + "/df_yoe_effect_ambiguity")
 
     return df_yoe_effect_ambiguity
 
 
-def eval_eu_loss(ambiguity_values, dfs_ambiguity, num_agents):
+def eval_eu_loss(ambiguity_values, dfs_ambiguity):
     """Calculate the expected utility loss that results from a setting that
     incorporates different levels of ambiguity.
 
@@ -174,7 +174,15 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity, num_agents):
     """
     EU, EU_Loss = {}, {}
     ambiguity_labels = get_dict_labels(ambiguity_values)
+    # Rewrite after everything works to accomodate general model(s)
+    index_value_func = [
+        "Value_Function_A",
+        "Value_Function_B",
+        "Value_Function_Edu",
+        "Value_Function_Home"
+        ]
 
+    print("AMBIGUITY LABELS", ambiguity_labels)
     # Calculate the Expected Utility and EU loss for each ambiguity value
     # Expected utility = value function at the initial period
     for df, ambiguity_label in zip(dfs_ambiguity, ambiguity_labels):
@@ -182,19 +190,21 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity, num_agents):
         EU_Loss[ambiguity_label] = []
 
     # Retrieve the last identifier within looped dataframe
-    num_agents = df.index[-1][0]+1
-    for i in range(0, num_agents):
-        EU[ambiguity_label].append(df[index_value_func].loc[(i,0)].max())
 
-    EU[ambiguity_label] = np.mean(EU[ambiguity_label])
-    EU_Loss[ambiguity_label] = np.abs(EU[ambiguity_label] - EU["absent"])/EU["absent"]
+        for i in range(0, df.index[-1][0]+1):
+            EU[ambiguity_label].append(df[index_value_func].loc[(i,0)].max())
+
+        EU[ambiguity_label] = np.mean(EU[ambiguity_label])
+        EU_Loss[ambiguity_label] = np.abs( (EU[ambiguity_label] - EU["absent"])/EU["absent"] )
+
+    print("EU", EU)
 
     # Assemble data frames
     df_EU = pd.DataFrame.from_dict(EU, orient="index", columns=["EU"])
     df_EU["EU_Loss"] = pd.Series(EU_Loss)
 
     # Save data frame
-    df_EU.to_pickle(subdir_robustness + "/df_EU")
+    #df_EU.to_pickle(subdir_robustness + "/df_EU")
 
     return df_EU
 

@@ -24,13 +24,12 @@ dependencies:
   
   - mkl
   - nbsphinx=0.4.2
-  #- numba>=0.43.1
   - numba=0.48.0
   - numpydoc
   - pandas>=0.24
   - pyaml
   - pygmo
-#  - robupy
+  # - robupy
   - seaborn
   - numpy
   - pytest

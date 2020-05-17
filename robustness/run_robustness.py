@@ -28,7 +28,7 @@ import respy as rp
 from robustness_library import get_model_specification
 from robustness_library import get_dict_labels  # should enter module auxiliary functions
 from robustness_library import simulation_ambiguity
-from robustness_library import eval_experiece_effect_ambiguity
+from robustness_library import eval_experience_effect_ambiguity
 from robustness_library import eval_eu_loss
 from robustness_library import distribute_tasks
 # Recover path to load the pickle files
@@ -66,6 +66,8 @@ def main():
 
     # IMPORTANT - Ubuntu:   $ mpiexec -n 1 -usize 3 python run_robustness.py
     # IMPORTANT - MacOS:    $ mpiexec.hydra -n 1 -usize 3 python run_robustness.py
+    # Information about option -usize (https://www.mpi-forum.org/docs/mpi-2.0/mpi-20-html/node111.htm)
+    # Information about option -n ()
     # MPI processing
     num_proc, is_distributed = 3, True
     dfs_ambiguity = distribute_tasks(
@@ -77,6 +79,24 @@ def main():
 
     for num in range(0, len(dfs_ambiguity)):
         dfs_ambiguity[num].to_pickle(subdir_robustness / f"dfs_ambiguity_{num}.pkl")
+
+
+    # Evaluate effect of ambiguity on years of experience.
+    df_yoe_effect_ambiguity = eval_experience_effect_ambiguity(
+        AMBIGUITY_VALUES,
+        dfs_ambiguity,
+        10,
+        NUM_PERIODS
+        )
+    df_yoe_effect_ambiguity.to_pickle(subdir_robustness / "df_yoe_effect_ambiguity.pkl")
+
+    hi = get_dict_labels(AMBIGUITY_VALUES)
+    print(hi)
+
+    # Evaluate expected utility loss
+    df_eu_loss = eval_eu_loss(AMBIGUITY_VALUES, dfs_ambiguity)
+    # df_eu_loss.to_pickle(subdir_robustness / "df_EU.pkl")
+
 
 
 if __name__ == "__main__":
