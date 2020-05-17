@@ -151,9 +151,6 @@ def eval_experience_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_educ
         columns={0: "School", 1: "White", 2: "Blue", 3: "Home"}
     )
 
-    # Save data frame --> will save it in the main function properly
-    # df_yoe_effect_ambiguity.to_pickle(subdir_robustness + "/df_yoe_effect_ambiguity")
-
     return df_yoe_effect_ambiguity
 
 
@@ -182,15 +179,13 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
         "Value_Function_Home"
         ]
 
-    print("AMBIGUITY LABELS", ambiguity_labels)
     # Calculate the Expected Utility and EU loss for each ambiguity value
     # Expected utility = value function at the initial period
     for df, ambiguity_label in zip(dfs_ambiguity, ambiguity_labels):
         EU[ambiguity_label] = []
         EU_Loss[ambiguity_label] = []
 
-    # Retrieve the last identifier within looped dataframe
-
+        # Retrieve the last identifier within looped dataframe
         for i in range(0, df.index[-1][0]+1):
             EU[ambiguity_label].append(df[index_value_func].loc[(i,0)].max())
 
@@ -202,9 +197,6 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
     # Assemble data frames
     df_EU = pd.DataFrame.from_dict(EU, orient="index", columns=["EU"])
     df_EU["EU_Loss"] = pd.Series(EU_Loss)
-
-    # Save data frame
-    #df_EU.to_pickle(subdir_robustness + "/df_EU")
 
     return df_EU
 

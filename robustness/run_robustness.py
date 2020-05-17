@@ -90,12 +90,10 @@ def main():
         )
     df_yoe_effect_ambiguity.to_pickle(subdir_robustness / "df_yoe_effect_ambiguity.pkl")
 
-    hi = get_dict_labels(AMBIGUITY_VALUES)
-    print(hi)
 
     # Evaluate expected utility loss
     df_eu_loss = eval_eu_loss(AMBIGUITY_VALUES, dfs_ambiguity)
-    # df_eu_loss.to_pickle(subdir_robustness / "df_EU.pkl")
+    df_eu_loss.to_pickle(subdir_robustness / "df_EU.pkl")
 
 
 
