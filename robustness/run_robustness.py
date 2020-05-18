@@ -1,5 +1,12 @@
 """This script runs the robustness analysis."""
 import os
+from pathlib import Path
+
+import respy as rp
+from robustness_library import distribute_tasks
+from robustness_library import eval_eu_loss
+from robustness_library import eval_experience_effect_ambiguity
+from robustness_library import get_model_specification
 
 # Automatic parallelism turned off
 parallel_off = {
@@ -11,19 +18,12 @@ parallel_off = {
 }
 os.environ.update(parallel_off)
 
-from pathlib import Path
-
+# Initializing subdirectory
 subdir_robustness = Path(f"{os.environ['PROJECT_ROOT']}/data")
 
 # import multiprocessing as mp
 # import numpy as np
 # import pandas as pd
-import respy as rp
-
-from robustness_library import get_model_specification
-from robustness_library import eval_experience_effect_ambiguity
-from robustness_library import eval_eu_loss
-from robustness_library import distribute_tasks
 
 # Define PARAMETERS (all will go into a "config_robustness.py" later)
 AMBIGUITY_VALUES = {
