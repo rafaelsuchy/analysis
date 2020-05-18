@@ -15,16 +15,12 @@ jobs:
            environment-file: environment.yml
            python-version: 3.7
 
-    #- name: Git Submodules Init
-    #  uses: chris-short/github-action-git-submodules@v0.1.0
-
     - name: run robustness
       shell: bash -l {0}
       run: |
         export PATH="$PATH:/usr/share/miniconda/bin"
         source .envrc
-        git submodule init
-        git submodule update
+        git submodule --init --recursive
 
         py.test
 
