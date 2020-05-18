@@ -1,6 +1,7 @@
 """Auxiliary functions for the MSM notebook."""
 import numpy as np
-import pandas as pd
+import respy as rp
+
 
 def calc_choice_frequencies(df):
     """Calculation of choice frequencies"""
@@ -20,10 +21,12 @@ def get_weighting_matrix(data, calc_moments, num_boots, num_agents_msm):
     index_base = data.index.get_level_values("Identifier").unique()
 
     # Create bootstrapped moments.
-    moments_sample = list()
+    moments_sample = []
     for _ in range(num_boots):
         ids_boot = np.random.choice(index_base, num_agents_msm, replace=False)
-        moments_boot = [calc_moments[key](data.loc[ids_boot, :]) for key in calc_moments.keys()]
+        moments_boot = [
+            calc_moments[key](data.loc[ids_boot, :]) for key in calc_moments.keys()
+        ]
 
         moments_boot = rp.get_flat_moments(moments_boot)
 

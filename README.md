@@ -1,8 +1,8 @@
-# Analysis and Exploration Robust Human Capital Investment 
+# Analysis and Exploration Robust Human Capital Investment
 
 This repository contains scripts for the analysis of Robust Human Capital Analysis.
 
-## Structure 
+## Structure
 
 - [`run_robustness.py`](https://github.com/structRobustness/analysis/blob/rafaelsuchy_scripts/robustness/run_robustness.py) executes the pre-defined analysis.
 - [`robustness_library.py`](https://github.com/structRobustness/analysis/blob/rafaelsuchy_scripts/robustness/robustness_library.py) contains functions to evaluate the effects no, low, and high ambiguity on years of experience in a certain occupation and expected utility loss.

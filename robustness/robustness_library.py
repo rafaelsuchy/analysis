@@ -1,38 +1,14 @@
 """This module contains functions needed for the robustness analysis. """
-
-import os
-import warnings
-from pathlib import Path
-
 import multiprocessing as mp
+import os
+
 import numpy as np
 import pandas as pd
 import respy as rp
 
-# Initialize the subdirectory path for reference to pickle files.
-#subdir_robustness = Path(
-    #f"{os.environ['PROJECT_ROOT']}/data"
-#)
-
-# Set the ambiguity values that will be considered throughout the project.
-# Set them into a config file later
-# AMBIGUITY_VALUES = {
-#    "absent": 0.00,
-#    "low": 0.1,
-#    "high": 0.2,
-#}
-
-# Need to initialize this stuff in a config file (potentially)
-#YEARS_EDUCATION = 10
-#NUM_PERIODS = 40
-#NUM_AGENTS = 1000
-
 
 def get_model_specification(
-    model="kw_94_two",
-    num_sim_agents=1000,
-    num_periods=40,
-    import_data=False,
+    model="kw_94_two", num_sim_agents=1000, num_periods=40, import_data=False,
 ):
     """Get the desired model specifications from respy model.
 
@@ -81,40 +57,10 @@ def get_dict_labels(dictionary):
     return dict_labels
 
 
-# This part is now in our main function (employed with multiprocessing)
-def simulation_ambiguity(ambiguity_values, model="kw_94_two"):
-    """Simulate models under various levels of ambiguity (ambiguity_values).
-
-    Args:
-        ambiguity_values (dict): Dictionary with various levels of ambiguity
-            to be implemented (key = name of scenario).
-
-        model (string): Number of Keane and Wolpin model.
-
-    Returns:
-        dfs_ambiguity (list): List of pd.DataFrame objects that contain the
-            simulated samples under specified ambiguity scenarios.
-    """
-    dfs_ambiguity = []
-
-    for ambiguity_value in ambiguity_values.values():
-        params, _ = rp.get_example_model(model, with_data=False)
-        # Maybe write a wrapper for params, and just params.copy()
-        params.loc[("eta", "eta"), "value"] = ambiguity_value
-
-        simulate_func = rp.get_simulate_func(params, options)
-        dfs_ambiguity.append(simulate(params))
-
-    # save as pickle file
-    # TODO: need to re-check syntax of this thing)
-    for num in range(0, len(df_ambiguity)):
-        dfs_ambiguity[num].to_pickle(subdir_robustness / f"/df_ambiguity_{num}")
-
-    return dfs_ambiguity
-
-
 # ToDo: Think how to include YEARS_EDUCATION and NUM_PERIODS in a proper way.
-def eval_experience_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_education, num_periods):
+def eval_experience_effect_ambiguity(
+    ambiguity_values, dfs_ambiguity, years_education, num_periods
+):
     """Evaluate effects on average years of experience in certain occupations
     when ambiguity is in place.
 
@@ -142,11 +88,13 @@ def eval_experience_effect_ambiguity(ambiguity_values, dfs_ambiguity, years_educ
             exp_edu,
             exp_b,
             exp_a,
-            (years_education + num_periods) - exp_edu - exp_b - exp_a
+            (years_education + num_periods) - exp_edu - exp_b - exp_a,
         ]
 
     # Assemble data frames
-    df_yoe_effect_ambiguity = pd.DataFrame.from_dict(yoe_effect_ambiguity, orient="index")
+    df_yoe_effect_ambiguity = pd.DataFrame.from_dict(
+        yoe_effect_ambiguity, orient="index"
+    )
     df_yoe_effect_ambiguity.rename(
         columns={0: "School", 1: "White", 2: "Blue", 3: "Home"}
     )
@@ -176,8 +124,8 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
         "Value_Function_A",
         "Value_Function_B",
         "Value_Function_Edu",
-        "Value_Function_Home"
-        ]
+        "Value_Function_Home",
+    ]
 
     # Calculate the Expected Utility and EU loss for each ambiguity value
     # Expected utility = value function at the initial period
@@ -186,11 +134,13 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
         EU_Loss[ambiguity_label] = []
 
         # Retrieve the last identifier within looped dataframe
-        for i in range(0, df.index[-1][0]+1):
-            EU[ambiguity_label].append(df[index_value_func].loc[(i,0)].max())
+        for i in range(0, df.index[-1][0] + 1):
+            EU[ambiguity_label].append(df[index_value_func].loc[(i, 0)].max())
 
         EU[ambiguity_label] = np.mean(EU[ambiguity_label])
-        EU_Loss[ambiguity_label] = np.abs( (EU[ambiguity_label] - EU["absent"])/EU["absent"] )
+        EU_Loss[ambiguity_label] = np.abs(
+            (EU[ambiguity_label] - EU["absent"]) / EU["absent"]
+        )
 
     print("EU", EU)
 
@@ -213,8 +163,10 @@ def distribute_tasks(func_task, tasks, num_proc=1, is_distributed=False):
     -----
     We need to ensure that the number of processes is never larger as the number of tasks as
     otherwise the MPI implementation does not terminate properly.
-    * MP Pool, see `here <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool>`_ for details
-    * MPI Pool, see `here <https://mpi4py.readthedocs.io/en/stable/mpi4py.futures.html#mpipoolexecutor>`_ for details
+    * MP Pool, for details
+    <https://docs.python.org/3/library/multiprocessing.html#multiprocessing.pool.Pool>
+    * MPI Pool, for details for details
+    <https://mpi4py.readthedocs.io/en/stable/mpi4py.futures.html#mpipoolexecutor>
     """
     num_proc_intern = min(len(tasks), num_proc)
 
