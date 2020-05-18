@@ -18,20 +18,17 @@ parallel_off = {
 }
 os.environ.update(parallel_off)
 
-# Initializing subdirectory
+# Initializing directory
 subdir_robustness = Path(f"{os.environ['PROJECT_ROOT']}/data")
 
-# import multiprocessing as mp
-# import numpy as np
-# import pandas as pd
-
-# Define PARAMETERS (all will go into a "config_robustness.py" later)
+# Define parameters for ambiguity set
 AMBIGUITY_VALUES = {
     "absent": 0.00,
     "low": 0.01,
     "high": 0.02,
 }
 
+# Define model parameters
 YEARS_EDUCATION = 10
 MODEL = "kw_94_two"
 NUM_PERIODS = 40

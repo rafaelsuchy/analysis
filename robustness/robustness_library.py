@@ -57,7 +57,6 @@ def get_dict_labels(dictionary):
     return dict_labels
 
 
-# ToDo: Think how to include YEARS_EDUCATION and NUM_PERIODS in a proper way.
 def eval_experience_effect_ambiguity(
     ambiguity_values, dfs_ambiguity, years_education, num_periods
 ):
@@ -119,7 +118,7 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
     """
     EU, EU_Loss = {}, {}
     ambiguity_labels = get_dict_labels(ambiguity_values)
-    # Rewrite after everything works to accomodate general model(s)
+    # To Do: Rewriting to accomodate more general KW models
     index_value_func = [
         "Value_Function_A",
         "Value_Function_B",
@@ -151,7 +150,7 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
     return df_EU
 
 
-# Copied direclty from
+# Copied directly from
 # https://github.com/OpenSourceEconomics/ose-code-templates/blob/master/
 # templates/01_embarssingly_parallel_loop/core_functions.py
 def distribute_tasks(func_task, tasks, num_proc=1, is_distributed=False):
