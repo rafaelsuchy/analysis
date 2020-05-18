@@ -29,7 +29,6 @@ dependencies:
   - pandas>=0.24
   - pyaml
   - pygmo
-  # - robupy
   - seaborn
   - numpy
   - pytest
