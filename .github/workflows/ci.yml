@@ -30,22 +30,3 @@ jobs:
 
         cd robustness
         mpiexec -n 1 -usize 3 python run_robustness.py
-
-  run-tests:
-
-    runs-on: 'ubuntu-latest'
-
-    steps:
-    - uses: actions/checkout@v2
-    - uses: goanpeca/setup-miniconda@v1.0.2
-      with:
-        activate-environment: struct_robustness
-        submodules: true
-        environment-file: environment.yml
-        python-version: 3.7
-    - name: testing
-      shell: bash -l {0}
-      run: |
-        export PATH="$PATH:/usr/share/miniconda/bin"
-        source .envrc
-        cd robustness
