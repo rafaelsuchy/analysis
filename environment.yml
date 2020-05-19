@@ -26,6 +26,7 @@ dependencies:
   - nbsphinx=0.4.2
   - numba=0.48.0
   - numpydoc
+  - nodejs
   - pandas>=0.24
   - pyaml
   - pygmo
