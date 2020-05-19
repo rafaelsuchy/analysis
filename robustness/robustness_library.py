@@ -8,7 +8,7 @@ import respy as rp
 
 
 def get_model_specification(
-    model="kw_94_two", num_sim_agents=1000, num_periods=40, import_data=False,
+    model="kw_94_two", num_sim_agents=1000, num_periods=40, import_data=False
 ):
     """Get the desired model specifications from respy model.
 
@@ -140,8 +140,6 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
         EU_Loss[ambiguity_label] = np.abs(
             (EU[ambiguity_label] - EU["absent"]) / EU["absent"]
         )
-
-    print("EU", EU)
 
     # Assemble data frames
     df_EU = pd.DataFrame.from_dict(EU, orient="index", columns=["EU"])

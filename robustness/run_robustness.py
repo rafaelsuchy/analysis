@@ -33,6 +33,7 @@ YEARS_EDUCATION = 10
 MODEL = "kw_94_two"
 NUM_PERIODS = 40
 NUM_AGENTS = 1000
+SAVE = False
 
 
 def main():
@@ -59,18 +60,22 @@ def main():
     num_proc, is_distributed = 3, True
     dfs_ambiguity = distribute_tasks(simulate_func, tasks, num_proc, is_distributed)
 
-    for num in range(0, len(dfs_ambiguity)):
-        dfs_ambiguity[num].to_pickle(subdir_robustness / f"dfs_ambiguity_{num}.pkl")
-
     # Evaluate effect of ambiguity on years of experience.
     df_yoe_effect_ambiguity = eval_experience_effect_ambiguity(
         AMBIGUITY_VALUES, dfs_ambiguity, 10, NUM_PERIODS
     )
-    df_yoe_effect_ambiguity.to_pickle(subdir_robustness / "df_yoe_effect_ambiguity.pkl")
 
     # Evaluate expected utility loss
     df_eu_loss = eval_eu_loss(AMBIGUITY_VALUES, dfs_ambiguity)
-    df_eu_loss.to_pickle(subdir_robustness / "df_EU.pkl")
+
+    if SAVE:
+        for num in range(0, len(dfs_ambiguity)):
+            dfs_ambiguity[num].to_pickle(subdir_robustness / f"dfs_ambiguity_{num}.pkl")
+
+        df_yoe_effect_ambiguity.to_pickle(
+            subdir_robustness / "df_yoe_effect_ambiguity.pkl"
+        )
+        df_eu_loss.to_pickle(subdir_robustness / "df_EU.pkl")
 
 
 if __name__ == "__main__":
