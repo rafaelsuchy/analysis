@@ -18,7 +18,6 @@ parallel_off = {
 }
 os.environ.update(parallel_off)
 
-# Initializing directory
 subdir_robustness = Path(f"{os.environ['PROJECT_ROOT']}/data")
 
 # Define parameters for ambiguity set
@@ -28,7 +27,7 @@ AMBIGUITY_VALUES = {
     "high": 0.02,
 }
 
-# Define model parameters
+# Define processing parameters
 YEARS_EDUCATION = 10
 MODEL = "kw_94_two"
 NUM_PERIODS = 40
@@ -51,11 +50,6 @@ def main():
         params.loc[("eta", "eta"), "value"] = ambiguity_value
         tasks.append(params)
 
-    # IMPORTANT - Ubuntu:   $ mpiexec -n 1 -usize 3 python run_robustness.py
-    # IMPORTANT - MacOS:    $ mpiexec.hydra -n 1 -usize 3 python run_robustness.py
-    # Information about option -usize
-    #   (https://www.mpi-forum.org/docs/mpi-2.0/mpi-20-html/node111.htm)
-    # Information about option -n ()
     # MPI processing
     num_proc, is_distributed = 3, True
     dfs_ambiguity = distribute_tasks(simulate_func, tasks, num_proc, is_distributed)
@@ -68,6 +62,7 @@ def main():
     # Evaluate expected utility loss
     df_eu_loss = eval_eu_loss(AMBIGUITY_VALUES, dfs_ambiguity)
 
+    # Save as pickle files
     if SAVE:
         for num in range(0, len(dfs_ambiguity)):
             dfs_ambiguity[num].to_pickle(subdir_robustness / f"dfs_ambiguity_{num}.pkl")
@@ -75,6 +70,7 @@ def main():
         df_yoe_effect_ambiguity.to_pickle(
             subdir_robustness / "df_yoe_effect_ambiguity.pkl"
         )
+
         df_eu_loss.to_pickle(subdir_robustness / "df_EU.pkl")
 
 

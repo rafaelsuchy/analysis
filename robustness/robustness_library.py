@@ -118,7 +118,7 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
     """
     EU, EU_Loss = {}, {}
     ambiguity_labels = get_dict_labels(ambiguity_values)
-    # To Do: Rewriting to accomodate more general KW models
+    # KW94 specific
     index_value_func = [
         "Value_Function_A",
         "Value_Function_B",
@@ -148,9 +148,7 @@ def eval_eu_loss(ambiguity_values, dfs_ambiguity):
     return df_EU
 
 
-# Copied directly from
-# https://github.com/OpenSourceEconomics/ose-code-templates/blob/master/
-# templates/01_embarssingly_parallel_loop/core_functions.py
+# Distributed tasks for MPI
 def distribute_tasks(func_task, tasks, num_proc=1, is_distributed=False):
     """Distribute workload.
     This function distributes the workload using the ``multiprocessing`` or ``mpi4py`` library.
