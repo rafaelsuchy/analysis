@@ -1,0 +1,32 @@
+name: Continuous Integration
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: goanpeca/setup-miniconda@v1.0.2
+      with:
+           activate-environment: struct_robustness
+           environment-file: environment.yml
+           python-version: 3.7
+
+    - name: run robustness
+      shell: bash -l {0}
+      run: |
+        export PATH="$PATH:/usr/share/miniconda/bin"
+        source .envrc
+        git submodule update --init --recursive
+
+        py.test
+
+        # We want to ensure that all notebooks also follow coding standards.
+        cd notebooks; flake8-nb; [ $? -eq 0 ] || exit 1; cd ..
+        black-nb .; [ $? -eq 0 ] || exit 1
+
+        cd robustness
+        mpiexec -n 1 -usize 3 python run_robustness.py

@@ -3,26 +3,33 @@ name: struct_robustness
 channels:
   - defaults
   - conda-forge
-  - janosg
+  - opensourceeconomics
 
 dependencies:
   - python=3.7.3
   - pip=19.0.3
   - click
+  - chaospy
   - codecov
   - statsmodels
-  - pygraphviz>=1.5
+
   - doc8
   - deepdiff
-  - estimagic>=0.0.9
+  - estimagic>=0.0.30
   - jupyterlab
   - matplotlib>=3.0.0
+
+  - mpi4py
+  - pytest-mpi
+
   - mkl
   - nbsphinx=0.4.2
-  - numba>=0.43.1
+  - numba=0.48.0
   - numpydoc
+  - nodejs
   - pandas>=0.24
   - pyaml
+  - pygmo
   - seaborn
   - numpy
   - pytest
@@ -30,15 +37,16 @@ dependencies:
   - pytest-xdist
   - restructuredtext_lint
   - scipy>=1.2.1
-  - Sphinx>=2.0.0
-  - sphinx-autobuild
   - tox-conda
+  - pytest-black
+  - pytest-flake8
   - pip:
     - apprise
     - pre-commit
-    - pysftp 
+    - pysftp
     - Py-BOBYQA
     - DFO-LS
     - PyPDF2
     - jupyterlab
-    - pygmo
+    - black-nb
+    - flake8-nb
