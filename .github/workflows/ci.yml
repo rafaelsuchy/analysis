@@ -25,7 +25,7 @@ jobs:
         py.test
 
         # We want to ensure that all notebooks also follow coding standards.
-        cd notebooks; flake8-nb; [ $? -eq 0 ] || exit 1; cd ..
+        #cd notebooks; flake8-nb; [ $? -eq 0 ] || exit 1; cd ..
         black-nb .; [ $? -eq 0 ] || exit 1
 
         cd robustness
