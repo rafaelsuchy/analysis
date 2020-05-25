@@ -1,7 +1,7 @@
 [submodule "submodules/respy"]
 	path = submodules/respy
 	url = https://github.com/structRobustness/respy.git
-	branch = adding_robustness_rafaelsuchy 
+	branch = speeding_robustness_rafaelsuchy 
 
 [submodule "submodules/robupy"]
 	path = submodules/robupy
