@@ -22,8 +22,7 @@ jobs:
         source .envrc
         git submodule update --init --recursive
 
-        cd tests
-        py.test
+        pytest
 
         # We want to ensure that all notebooks also follow coding standards.
         cd notebooks; flake8-nb; [ $? -eq 0 ] || exit 1; cd ..
