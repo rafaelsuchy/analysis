@@ -11,16 +11,9 @@ from respy.simulate import get_simulate_func
 subdir = Path(f"{os.environ['PROJECT_ROOT']}/tests/resources")
 
 
-@pytest.fixture
-def random_ambiguity():
-    """Draw some random ambiguity values."""
-    ambiguity_value_ = np.random.uniform(low=0.001, high=0.02)
-    return ambiguity_value_
-
-
 # Test: Assert likelihood value for different model specifications (options, params)
 # Includes ambiguity for iteration i > len(model_spec_params)/2
-# Reference data was generated under setting w/o speedup
+# Reference data was generated with inclusion of ambiguity but w/o speedup
 def test_loglike_around_models():
     # Load model specifications and associated loglike values
     model_spec_params = np.load(
@@ -56,7 +49,7 @@ def test_loglike_around_models():
 
 
 # Test: Assert likelihood value for different values of ambiguity and given model
-# Reference data was generated under setting w/o speedup
+# Reference data was generated with inclusion of ambiguity but w/o speedup
 @pytest.mark.parametrize("ambiguity", [0.00, 0.02])
 def test_log_likelihood_func(ambiguity):
 
