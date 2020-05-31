@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import pytest
 import respy as rp
 from respy.likelihood import get_crit_func
@@ -15,23 +16,15 @@ def test_loglike_around_models():
     """Asserts likelihood values for randomly chosen model specifications.
 
     Ambiguity included in model specifications for i > (number_models/2).
-    Reference data: no speed-up implementation.
+    Reference data: no speed-up implementation, number_models = 200
 
     """
-    # Load model specifications and associated loglike values
-    model_spec_params = np.load(
-        f"{SUBDIR}/model_spec_params.npy", allow_pickle="TRUE"
-    ).item()
-    model_spec_options = np.load(
-        f"{SUBDIR}/model_spec_options.npy", allow_pickle="TRUE"
-    ).item()
-    model_spec_loglike_values = np.load(
-        f"{SUBDIR}/loglike_values.npy", allow_pickle="TRUE"
-    ).item()
 
-    for i in range(len(model_spec_params)):
-        params = model_spec_params[str(i)]
-        options = model_spec_options[str(i)]
+    df_ll_ms = pd.read_pickle(f"{SUBDIR}/df_loglike_modelspecification.pickle")
+
+    for i in range(df_ll_ms.index[-1][0] + 1):
+        options = df_ll_ms.loc[(i, "options", "options"), "value"]
+        params = pd.to_numeric(df_ll_ms.loc[i][:-2].iloc[:, 0])
 
         simulate_func = get_simulate_func(params, options)
         df = simulate_func(params)
@@ -43,7 +36,7 @@ def test_loglike_around_models():
 
         np.testing.assert_almost_equal(
             loglike,
-            model_spec_loglike_values[str(i)],
+            df_ll_ms.loc[(i, "loglike", "loglike"), "value"],
             decimal=5,
             err_msg="Assertion error log_like_values",
             verbose=True,
