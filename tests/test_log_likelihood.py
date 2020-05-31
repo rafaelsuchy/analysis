@@ -66,26 +66,20 @@ def test_log_likelihood_func(ambiguity):
 
     params.loc[("eta", "eta"), "value"] = ambiguity
 
+    expected = {}
+    expected[0.00] = -78.27710283833025
+    expected[0.02] = -79.32695775924732
+
     simulate_func = get_simulate_func(params, options)
     df = simulate_func(params)
 
     loglike_func = get_crit_func(params, options, df, return_comparison_plot_data=False)
     loglike = loglike_func(params)
 
-    if ambiguity == 0.00:
-        np.testing.assert_almost_equal(
-            loglike,
-            -78.27710283833025,
-            decimal=5,
-            err_msg="Assertion error log_like_values",
-            verbose=True,
-        )
-
-    elif ambiguity == 0.02:
-        np.testing.assert_almost_equal(
-            loglike,
-            -79.32695775924732,
-            decimal=5,
-            err_msg="Assertion error log_like_values",
-            verbose=True,
-        )
+    np.testing.assert_almost_equal(
+        loglike,
+        expected[ambiguity],
+        decimal=5,
+        err_msg="Assertion error log_like_values",
+        verbose=True,
+    )
