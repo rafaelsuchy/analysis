@@ -72,8 +72,6 @@ def test_log_likelihood_func(ambiguity):
     loglike_func = get_crit_func(params, options, df, return_comparison_plot_data=False)
     loglike = loglike_func(params)
 
-    assert isinstance(loglike, float)
-
     if ambiguity == 0.00:
         np.testing.assert_almost_equal(
             loglike,
