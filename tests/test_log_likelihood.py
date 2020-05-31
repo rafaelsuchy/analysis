@@ -8,7 +8,7 @@ import respy as rp
 from respy.likelihood import get_crit_func
 from respy.simulate import get_simulate_func
 
-subdir = Path(f"{os.environ['PROJECT_ROOT']}/tests/resources")
+SUBDIR = Path(f"{os.environ['PROJECT_ROOT']}/tests/resources")
 
 
 # Test: Assert likelihood value for different model specifications (options, params)
@@ -17,13 +17,13 @@ subdir = Path(f"{os.environ['PROJECT_ROOT']}/tests/resources")
 def test_loglike_around_models():
     # Load model specifications and associated loglike values
     model_spec_params = np.load(
-        f"{subdir}/model_spec_params.npy", allow_pickle="TRUE"
+        f"{SUBDIR}/model_spec_params.npy", allow_pickle="TRUE"
     ).item()
     model_spec_options = np.load(
-        f"{subdir}/model_spec_options.npy", allow_pickle="TRUE"
+        f"{SUBDIR}/model_spec_options.npy", allow_pickle="TRUE"
     ).item()
     model_spec_loglike_values = np.load(
-        f"{subdir}/loglike_values.npy", allow_pickle="TRUE"
+        f"{SUBDIR}/loglike_values.npy", allow_pickle="TRUE"
     ).item()
 
     for i in range(len(model_spec_params)):
