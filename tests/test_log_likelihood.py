@@ -11,10 +11,13 @@ from respy.simulate import get_simulate_func
 SUBDIR = Path(f"{os.environ['PROJECT_ROOT']}/tests/resources")
 
 
-# Test: Assert likelihood value for different model specifications (options, params)
-# Includes ambiguity for iteration i > len(model_spec_params)/2
-# Reference data was generated with inclusion of ambiguity but w/o speedup
 def test_loglike_around_models():
+    """Asserts likelihood values for randomly chosen model specifications.
+
+    Ambiguity included in model specifications for i > (number_models/2).
+    Reference data: no speed-up implementation.
+
+    """
     # Load model specifications and associated loglike values
     model_spec_params = np.load(
         f"{SUBDIR}/model_spec_params.npy", allow_pickle="TRUE"
@@ -27,7 +30,6 @@ def test_loglike_around_models():
     ).item()
 
     for i in range(len(model_spec_params)):
-        # Initialize values of current iteration
         params = model_spec_params[str(i)]
         options = model_spec_options[str(i)]
 
@@ -40,18 +42,21 @@ def test_loglike_around_models():
         loglike = loglike_func(params)
 
         np.testing.assert_almost_equal(
-            loglike,  # actual
-            model_spec_loglike_values[str(i)],  # expected
-            decimal=5,  # precision of assertion
+            loglike,
+            model_spec_loglike_values[str(i)],
+            decimal=5,
             err_msg="Assertion error log_like_values",
             verbose=True,
         )
 
 
-# Test: Assert likelihood value for different values of ambiguity and given model
-# Reference data was generated with inclusion of ambiguity but w/o speedup
 @pytest.mark.parametrize("ambiguity", [0.00, 0.02])
 def test_log_likelihood_func(ambiguity):
+    """Asserts likelihood values for different ambiguity-levels at given model.
+
+    Reference data: no speed-up implementation.
+
+    """
 
     params, options = rp.get_example_model("kw_94_two", with_data=False)
     options["n_periods"] = 10
@@ -71,18 +76,18 @@ def test_log_likelihood_func(ambiguity):
 
     if ambiguity == 0.00:
         np.testing.assert_almost_equal(
-            loglike,  # actual
-            -78.27710283833025,  # expected
-            decimal=5,  # precision of assertion
+            loglike,
+            -78.27710283833025,
+            decimal=5,
             err_msg="Assertion error log_like_values",
             verbose=True,
         )
 
     elif ambiguity == 0.02:
         np.testing.assert_almost_equal(
-            loglike,  # actual
-            -79.32695775924732,  # expected
-            decimal=5,  # precision of assertion
+            loglike,
+            -79.32695775924732,
+            decimal=5,
             err_msg="Assertion error log_like_values",
             verbose=True,
         )
