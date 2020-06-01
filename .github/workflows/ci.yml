@@ -25,7 +25,7 @@ jobs:
         pytest
 
         cd notebooks; flake8-nb; [ $? -eq 0 ] || exit 1; cd ..
-        black-nb .; [ $? -eq 0 ] || exit 1 
+        black-nb --check .; [ $? -eq 0 ] || exit 1 
 
         cd robustness
         mpiexec -n 1 -usize 3 python run_robustness.py
