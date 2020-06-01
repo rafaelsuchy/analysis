@@ -24,6 +24,7 @@ jobs:
 
         pytest
 
+        cd notebooks; flake8-nb; [ $? -eq 0 ] || exit 1; cd ..
         black-nb --check .; [ $? -eq 0 ] || exit 1 
 
         cd robustness
