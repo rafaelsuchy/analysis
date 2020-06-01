@@ -66,7 +66,7 @@ def test_log_likelihood_func(ambiguity):
     simulate_func = get_simulate_func(params, options)
     df = simulate_func(params)
 
-    loglike_func = get_crit_func(params, options, df, return_comparison_plot_data=False)
+    loglike_func = get_crit_func(params, options, df)
     loglike = loglike_func(params)
 
     np.testing.assert_almost_equal(
