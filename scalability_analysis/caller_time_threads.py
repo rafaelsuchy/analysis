@@ -3,10 +3,11 @@ import subprocess
 import sys
 from pathlib import Path
 
-MAX_THREADS = 8
+from config import MAX_THREADS
 
 if __name__ == "__main__":
 
+    print("MAX THREADS", MAX_THREADS)
     # Bulding time frames
     check = Path("./resources/time_num_threads_" + str(MAX_THREADS) + ".npy")
     if not check.exists():
