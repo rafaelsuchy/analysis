@@ -1,20 +1,18 @@
 """Processing time of _full_solution() function of `respy` time only."""
 import datetime
-import multiprocessing
 import sys
 
 import numpy as np
+from config import INPUT_DATA_PROCESSES
+from config import ITERATIONS_PROCESSES
 from respy.solve import _full_solution
-
-ITERATIONS = 100_000
-CORES = multiprocessing.cpu_count()
 
 if __name__ == "__main__":
 
     if len(sys.argv) > 1:
         n_processes = int(sys.argv[1])
 
-    input_params = np.load("robustness_inputs_kw_94_one.npy", allow_pickle=True).item()
+    input_params = np.load(INPUT_DATA_PROCESSES, allow_pickle=True).item()
 
     wages = input_params["wages"]
     nonpecs = input_params["nonpecs"]
@@ -24,13 +22,13 @@ if __name__ == "__main__":
 
     start = datetime.datetime.now()
 
-    for _j in range(ITERATIONS):
+    for _j in range(ITERATIONS_PROCESSES):
         calc = _full_solution(
             wages, nonpecs, continuation_values, period_draws_emax_risk, optim_paras,
         )
 
     end = datetime.datetime.now()
 
-    times = (end - start) / ITERATIONS
+    times = (end - start) / ITERATIONS_PROCESSES
 
     np.save(f"./resources/times_numproc_{n_processes}", times, allow_pickle=True)

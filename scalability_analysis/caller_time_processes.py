@@ -1,12 +1,11 @@
 """Caller for processing_time evaluation with different amount of processes."""
-import multiprocessing
 import subprocess
 
-CORES = multiprocessing.cpu_count()
+from config import MAX_PROCESSES
 
 if __name__ == "__main__":
 
-    for n_processes in range(1, CORES + 1):
+    for n_processes in range(1, MAX_PROCESSES + 1):
 
         mpiexec_ = (
             "mpiexec.hydra -n "

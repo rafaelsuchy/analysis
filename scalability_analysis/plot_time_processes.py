@@ -1,13 +1,11 @@
 """Plotting module for different amount of processes."""
-import multiprocessing
 import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+from config import MAX_PROCESSES
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
-
-CORES = multiprocessing.cpu_count()
 
 if __name__ == "__main__":
 
@@ -15,10 +13,10 @@ if __name__ == "__main__":
         np.load(f"./resources/times_numproc_{i}.npy", allow_pickle=True)
         .item()
         .microseconds
-        for i in range(1, CORES + 1)
+        for i in range(1, MAX_PROCESSES + 1)
     ]
 
-    xs = [*range(1, CORES + 1)]
+    xs = [*range(1, MAX_PROCESSES + 1)]
 
     plt.style.use("seaborn-dark-palette")
     fig, ax = plt.subplots(1, 1)
