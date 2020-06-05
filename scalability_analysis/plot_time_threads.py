@@ -2,12 +2,13 @@ import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+from config import MAX_THREADS
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
 
-MAX_THREADS = 8
-
 if __name__ == "__main__":
+
+    print("MAX THREADS")
 
     ys = [
         np.load(f"./resources/time_num_threads_{i}.npy", allow_pickle=True)
