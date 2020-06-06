@@ -1,21 +1,19 @@
 import sys
 
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
 from config import MAX_THREADS
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
 
 if __name__ == "__main__":
 
-    print("MAX THREADS")
+    times_df_threads = pd.read_pickle(
+        f"./resources/times_df_threads_{MAX_THREADS}.pickle"
+    )
 
-    ys = [
-        np.load(f"./resources/time_num_threads_{i}.npy", allow_pickle=True)
-        .item()
-        .microseconds
-        for i in range(1, MAX_THREADS + 1)
-    ]
+    ys = [*times_df_threads.iloc[:1].mean()]
+    # 1 second = 10^6 microseconds
     xs = [*range(1, MAX_THREADS + 1)]
 
     fig, ax = plt.subplots(1, 1)
@@ -29,6 +27,6 @@ if __name__ == "__main__":
 
     # Save or show
     if len(sys.argv) > 1 and sys.argv[1] == "save":
-        fig.savefig("./resources/time_num_threads_plot.pdf", bbox_inches="tight")
+        fig.savefig("./resources/figure_time_num_threads.pdf", bbox_inches="tight")
     else:
         plt.show()

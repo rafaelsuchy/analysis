@@ -7,9 +7,8 @@ from config import MAX_THREADS
 
 if __name__ == "__main__":
 
-    print("MAX THREADS", MAX_THREADS)
     # Bulding time frames
-    check = Path("./resources/time_num_threads_" + str(MAX_THREADS) + ".npy")
+    check = Path("./resources/times_df_threads_" + str(MAX_THREADS) + ".pickle")
     if not check.exists():
 
         for n_threads in range(1, MAX_THREADS + 1):
