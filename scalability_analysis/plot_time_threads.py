@@ -1,3 +1,4 @@
+"""Plotting module for vizualization of time vs. number of threads / processes."""
 import sys
 
 import matplotlib.pyplot as plt
