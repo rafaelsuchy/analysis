@@ -26,19 +26,18 @@ import pandas as pd
 from respy.solve import _full_solution
 from config import ITERATIONS_THREADS
 from config import MAX_THREADS
-from config import INPUT_DATA_THREADS
-from config import PERIOD
+from caller_scalability_analysis import PATH_AUXINPUT_PARAMS
 
 
 if __name__ == "__main__":
 
-    input_params = np.load(INPUT_DATA_THREADS, allow_pickle=True).item()
+    input_params = np.load(PATH_AUXINPUT_PARAMS, allow_pickle=True).item()
 
-    wages = input_params[PERIOD]["wages"]
-    nonpecs = input_params[PERIOD]["nonpecs"]
-    continuation_values = input_params[PERIOD]["continuation_values"]
-    period_draws_emax_risk = input_params[PERIOD]["period_draws_emax_risk"]
-    optim_paras = input_params[PERIOD]["optim_paras"]
+    wages = input_params["wages"]
+    nonpecs = input_params["nonpecs"]
+    continuation_values = input_params["continuation_values"]
+    period_draws_emax_risk = input_params["period_draws_emax_risk"]
+    optim_paras = input_params["optim_paras"]
 
     times = []
     for _j in range(ITERATIONS_THREADS):
