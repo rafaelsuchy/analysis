@@ -3,16 +3,19 @@ import datetime
 import sys
 
 import numpy as np
-from config import INPUT_DATA_PROCESSES
+import pandas as pd
+from caller_scalability_analysis import PATH_AUXINPUT_PARAMS
 from config import ITERATIONS_PROCESSES
+from config import MAX_PROCESSES
 from respy.solve import _full_solution
+
 
 if __name__ == "__main__":
 
     if len(sys.argv) > 1:
-        n_processes = int(sys.argv[1])
+        num_processes = int(sys.argv[1])
 
-    input_params = np.load(INPUT_DATA_PROCESSES, allow_pickle=True).item()
+    input_params = np.load(PATH_AUXINPUT_PARAMS, allow_pickle=True).item()
 
     wages = input_params["wages"]
     nonpecs = input_params["nonpecs"]
@@ -20,15 +23,24 @@ if __name__ == "__main__":
     period_draws_emax_risk = input_params["period_draws_emax_risk"]
     optim_paras = input_params["optim_paras"]
 
-    start = datetime.datetime.now()
-
+    times = []
     for _j in range(ITERATIONS_PROCESSES):
+
+        start = datetime.datetime.now()
         calc = _full_solution(
             wages, nonpecs, continuation_values, period_draws_emax_risk, optim_paras,
         )
+        end = datetime.datetime.now()
 
-    end = datetime.datetime.now()
+        times.append((end - start).microseconds)
 
-    times = (end - start) / ITERATIONS_PROCESSES
+    df_times = pd.DataFrame(times, columns=[f"{num_processes}"])
 
-    np.save(f"./resources/times_numproc_{n_processes}", times, allow_pickle=True)
+    if int(num_processes) > 1:
+        (
+            pd.read_pickle(
+                f"./resources/times_df_processes_{MAX_PROCESSES}.pickle"
+            ).join(df_times, lsuffix="_")
+        ).to_pickle(f"./resources/times_df_processes_{MAX_PROCESSES}.pickle")
+    else:
+        df_times.to_pickle(f"./resources/times_df_processes_{MAX_PROCESSES}.pickle")
