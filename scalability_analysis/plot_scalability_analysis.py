@@ -2,7 +2,6 @@
 import sys
 
 import matplotlib.pyplot as plt
-import numpy as np
 import pandas as pd
 from caller_scalability_analysis import SCALABILITY_ANALYSIS
 from config import MAX_PROCESSES
@@ -11,88 +10,56 @@ from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
 
 
-def plot_time_threads(MAX_THREADS):
+def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
     """Illustration of execution time to available threads.
 
     Parameters:
     -----------
-    MAX_THREADS: int
-        maximum number of available (used) threads set in config.py
+    SCALABILITY_ANALYSIS: str
+        Type of scalability analysis to perform: processes or threads.
+    max_processes_threads: int
+        Maximum number of available (used) processes or threads set in config.py.
 
     Returns:
     --------
-    TBD
+    figure_time_num_{SCALABILITY_ANALYSIS}: fig
+        Saved figure.
 
     """
-    times_df_threads = pd.read_pickle(
-        f"./resources/times_df_threads_{MAX_THREADS}.pickle"
+    times_df = pd.read_pickle(
+        f"./resources/times_df_{SCALABILITY_ANALYSIS}_{max_processes_threads}.pickle"
     )
 
-    ys = [*times_df_threads.iloc[:1].mean()]
-    # 1 second = 10^6 microseconds
-    xs = [*range(1, MAX_THREADS + 1)]
+    # Exclude first time measurement due to numba "burn-in".
+    ys = [*times_df.iloc[:1].mean()]
+    xs = [*range(1, max_processes_threads + 1)]
 
     fig, ax = plt.subplots(1, 1)
     ax.plot(xs, ys)
 
-    ax.set_xlabel("Number of threads")
+    # Axis label and formatting.
+    ax.set_xlabel(f"Number of {SCALABILITY_ANALYSIS}")
     ax.set_ylabel("Microseconds")
-
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(int(x), ",")))
 
-    # Save or show
-    if len(sys.argv) > 1 and sys.argv[1] == "save":
-        fig.savefig("./resources/figure_time_num_threads.pdf", bbox_inches="tight")
-    else:
+    # Save or show.
+    if len(sys.argv) > 1 and sys.argv[1] == "show":
         plt.show()
-
-
-def plot_time_processes(MAX_PROCESSES):
-    """Illustration of execution time to available processes in mpiexec.
-
-    Parameters:
-    -----------
-    MAX_PROCESSES: int
-        maximum number of available (used) processes set in config.py
-
-    Returns:
-    --------
-    TBD
-
-    """
-    ys = [
-        np.load(f"./resources/times_numproc_{i}.npy", allow_pickle=True)
-        .item()
-        .microseconds
-        for i in range(1, MAX_PROCESSES + 1)
-    ]
-
-    xs = [*range(1, MAX_PROCESSES + 1)]
-
-    plt.style.use("seaborn-dark-palette")
-    fig, ax = plt.subplots(1, 1)
-
-    ax.plot(xs, ys)
-
-    ax.set_xlabel("Number of processes to use (mpiexec)")
-    ax.set_ylabel("Microseconds")
-
-    ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-    ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(int(x), ",")))
-
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "show":
-            plt.show()
-        if sys.argv[1] == "save":
-            fig.savefig("./resources/process_time_plot.pdf", bbox_inches="tight")
+    else:
+        fig.savefig(
+            "./resources/figure_time_num_{SCALABILITY_ANALYSIS}.pdf",
+            bbox_inches="tight",
+        )
 
 
 if __name__ == "__main__":
 
-    if SCALABILITY_ANALYSIS == "THREADS":
-        plot_time_threads(MAX_THREADS)
-    elif SCALABILITY_ANALYSIS == "PROCESSES":
-        plot_time_processes(MAX_PROCESSES)
+    if SCALABILITY_ANALYSIS == "threads":
+        max_processes_threads = MAX_THREADS
+    elif SCALABILITY_ANALYSIS == "processes":
+        max_processes_threads = MAX_PROCESSES
     else:
         pass
+
+    plot_time(SCALABILITY_ANALYSIS, max_processes_threads)
