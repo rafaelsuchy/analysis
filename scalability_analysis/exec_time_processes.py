@@ -17,18 +17,16 @@ if __name__ == "__main__":
 
     input_params = np.load(PATH_AUXINPUT_PARAMS, allow_pickle=True).item()
 
-    wages = input_params["wages"]
-    nonpecs = input_params["nonpecs"]
-    continuation_values = input_params["continuation_values"]
-    period_draws_emax_risk = input_params["period_draws_emax_risk"]
-    optim_paras = input_params["optim_paras"]
-
     times = []
     for _j in range(ITERATIONS_PROCESSES):
 
         start = datetime.datetime.now()
         calc = _full_solution(
-            wages, nonpecs, continuation_values, period_draws_emax_risk, optim_paras,
+            input_params["wages"],
+            input_params["nonpecs"],
+            input_params["continuation_values"],
+            input_params["period_draws_emax_risk"],
+            input_params["optim_paras"],
         )
         end = datetime.datetime.now()
 
