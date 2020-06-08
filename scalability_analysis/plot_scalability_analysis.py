@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from caller_scalability_analysis import SCALABILITY_ANALYSIS
 from config import MAX_THREADS_PROCESSES
+from config import PERIOD
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
 
 
-def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
+def plot_time(processes_threads, max_processes_threads, period=""):
     """Illustration of execution time to available threads / processes.
 
     Parameters:
@@ -26,7 +27,7 @@ def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
 
     """
     times_df = pd.read_pickle(
-        f"./resources/times_df_{SCALABILITY_ANALYSIS}_{max_processes_threads}.pickle"
+        f"./resources/times_df_{max_processes_threads}{processes_threads}_per{period}.pickle"
     )
 
     # Exclude first time measurement due to numba "burn-in".
@@ -37,7 +38,7 @@ def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
     ax.plot(xs, ys)
 
     # Axis label and formatting.
-    ax.set_xlabel(f"Number of {SCALABILITY_ANALYSIS}")
+    ax.set_xlabel(f"Number of {processes_threads}")
     ax.set_ylabel("Microseconds")
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(int(x), ",")))
@@ -47,11 +48,12 @@ def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
         plt.show()
     else:
         fig.savefig(
-            f"./resources/figure_time_{max_processes_threads}_{SCALABILITY_ANALYSIS}.pdf",
+            f"./resources/figure_time_{max_processes_threads}"
+            + f"{processes_threads}_per{period}.pdf",
             bbox_inches="tight",
         )
 
 
 if __name__ == "__main__":
 
-    plot_time(SCALABILITY_ANALYSIS, MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS])
+    plot_time(SCALABILITY_ANALYSIS, MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS], PERIOD)
