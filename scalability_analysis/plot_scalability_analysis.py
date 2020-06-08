@@ -4,8 +4,7 @@ import sys
 import matplotlib.pyplot as plt
 import pandas as pd
 from caller_scalability_analysis import SCALABILITY_ANALYSIS
-from config import MAX_PROCESSES
-from config import MAX_THREADS
+from config import MAX_THREADS_PROCESSES
 from matplotlib.ticker import FuncFormatter
 from matplotlib.ticker import MaxNLocator
 
@@ -48,18 +47,11 @@ def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
         plt.show()
     else:
         fig.savefig(
-            "./resources/figure_time_num_{SCALABILITY_ANALYSIS}.pdf",
+            f"./resources/figure_time_num_{SCALABILITY_ANALYSIS}.pdf",
             bbox_inches="tight",
         )
 
 
 if __name__ == "__main__":
 
-    if SCALABILITY_ANALYSIS == "threads":
-        max_processes_threads = MAX_THREADS
-    elif SCALABILITY_ANALYSIS == "processes":
-        max_processes_threads = MAX_PROCESSES
-    else:
-        pass
-
-    plot_time(SCALABILITY_ANALYSIS, max_processes_threads)
+    plot_time(SCALABILITY_ANALYSIS, MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS])
