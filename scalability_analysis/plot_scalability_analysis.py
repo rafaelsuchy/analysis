@@ -10,7 +10,7 @@ from matplotlib.ticker import MaxNLocator
 
 
 def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
-    """Illustration of execution time to available threads.
+    """Illustration of execution time to available threads / processes.
 
     Parameters:
     -----------
@@ -21,8 +21,8 @@ def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
 
     Returns:
     --------
-    figure_time_num_{SCALABILITY_ANALYSIS}: fig
-        Saved figure.
+    figure_time_{max_processes_threads}_{SCALABILITY_ANALYSIS}: fig
+        Saved figure as pdf.
 
     """
     times_df = pd.read_pickle(
@@ -47,7 +47,7 @@ def plot_time(SCALABILITY_ANALYSIS, max_processes_threads):
         plt.show()
     else:
         fig.savefig(
-            f"./resources/figure_time_num_{SCALABILITY_ANALYSIS}.pdf",
+            f"./resources/figure_time_{max_processes_threads}_{SCALABILITY_ANALYSIS}.pdf",
             bbox_inches="tight",
         )
 
