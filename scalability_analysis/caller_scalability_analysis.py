@@ -1,4 +1,4 @@
-"""Caller for time evaluation with different number of threads and/or processes."""
+"""Caller for execution time evaluation under different number of threads and/or processes."""
 import os
 import subprocess
 import sys
@@ -9,8 +9,7 @@ from config import INPUT_DATA
 from config import MAX_THREADS_PROCESSES
 from config import PERIOD
 
-# This will be a command line argument later!
-SCALABILITY_ANALYSIS = "threads"  # @["threads", "processes"]
+SCALABILITY_ANALYSIS = "threads"  # @["threads", "processes"] (command line)
 PATH_AUXINPUT_PARAMS = Path("./resources/sliced_input_params.npy")
 
 
@@ -44,7 +43,8 @@ def caller_exec_time_processes(MAX_PROCESSES):
 
     Returns:
     --------
-    TBD
+    times_df_processes_MAX_PROCESSES.pickle: pd.DataFrame
+        saves the output in ./resources as dataframe
 
     """
     for n_processes in range(1, MAX_PROCESSES + 1):
@@ -59,6 +59,9 @@ def caller_exec_time_processes(MAX_PROCESSES):
 
 
 if __name__ == "__main__":
+
+    if len(sys.argv) > 1 and sys.argv[1] == "processes":
+        SCALABILITY_ANALYSIS = "processes"
 
     check = Path(
         f"./resources/times_df_{SCALABILITY_ANALYSIS}_"
