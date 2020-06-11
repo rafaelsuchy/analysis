@@ -9,42 +9,41 @@ from config import INPUT_DATA
 from config import MAX_THREADS_PROCESSES
 from config import PERIOD
 
-SCALABILITY_ANALYSIS = "threads"  # @["threads", "processes"] (command line)
+SCALABILITY_ANALYSIS = "threads"  # @["threads", "processes"]
 PATH_AUXINPUT_PARAMS = Path("./resources/sliced_input_params.npy")
 
 
 def caller_exec_time_threads(MAX_THREADS):
-    """Caller for execution of exec_time_threads.py .
+    """Caller for analysis of computation time under different number of threads.
 
     Parameters:
     -----------
     MAX_THREADS: int
-        maximum number of threads that will be iterated through (set in config.py)
+        Maximum number of threads that will be iterated through (set in config.py).
 
     Returns:
     --------
     times_df_threads_MAX_THREADS.pickle: pd.DataFrame
-        saves the output in ./resources as dataframe
+        Output saved in ./resources as pd.DataFrame.
 
     """
-
     for n_threads in range(1, MAX_THREADS + 1):
         call_ = "python exec_time_scalability.py " + str(n_threads)
         subprocess.call(call_, shell=True)
 
 
 def caller_exec_time_processes(MAX_PROCESSES):
-    """Caller for execution of exec_time_processes.py .
+    """Caller for analysis of computation time under different number of processes.
 
     Parameters:
     -----------
     MAX_PROCESSES: int
-        maximum number of processes that will be used through mpiexec .
+        Maximum number of processes that will be iterated through using mpiexec.
 
     Returns:
     --------
     times_df_processes_MAX_PROCESSES.pickle: pd.DataFrame
-        saves the output in ./resources as dataframe
+        Output saved in ./resources as pd.DataFrame.
 
     """
     for n_processes in range(1, MAX_PROCESSES + 1):
@@ -71,7 +70,6 @@ if __name__ == "__main__":
 
     if not check.exists():
         input_params = np.load(INPUT_DATA, allow_pickle=True).item()[PERIOD]
-        # input_params = input_params[PERIOD]
         np.save(PATH_AUXINPUT_PARAMS, input_params, allow_pickle=True)
 
         if SCALABILITY_ANALYSIS == "threads":

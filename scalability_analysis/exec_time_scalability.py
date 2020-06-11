@@ -53,7 +53,7 @@ if __name__ == "__main__":
             input_params["optim_paras"],
         )
         end = datetime.datetime.now()
-        # print("Iteration", _j)
+        print("Iteration", _j)
 
         times.append((end - start).microseconds)
 
@@ -63,12 +63,12 @@ if __name__ == "__main__":
     if int(num_threads) > 1:
         (
             pd.read_pickle(
-                f"./resources/times_df_{number}{SCALABILITY_ANALYSIS}_per{PERIOD}.pickle"
+                f"./resources/times_df_{number}{SCALABILITY_ANALYSIS}_{PERIOD}.pickle"
             ).join(df_times, lsuffix="_")
         ).to_pickle(
-            f"./resources/times_df_{number}{SCALABILITY_ANALYSIS}_per{PERIOD}.pickle"
+            f"./resources/times_df_{number}{SCALABILITY_ANALYSIS}_{PERIOD}.pickle"
         )
     else:
         df_times.to_pickle(
-            f"./resources/times_df_{number}{SCALABILITY_ANALYSIS}_per{PERIOD}.pickle"
+            f"./resources/times_df_{number}{SCALABILITY_ANALYSIS}_{PERIOD}.pickle"
         )

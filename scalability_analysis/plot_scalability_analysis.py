@@ -1,4 +1,4 @@
-"""Plotting module for vizualization of time vs. number of threads / processes."""
+"""Plotting module for vizualization of computation time vs. number of threads / processes."""
 import sys
 
 import matplotlib.pyplot as plt
@@ -23,11 +23,11 @@ def plot_time(processes_threads, max_processes_threads, period=""):
     Returns:
     --------
     figure_time_{max_processes_threads}_{SCALABILITY_ANALYSIS}: fig
-        Saved figure as pdf.
+        Figure saved in ./resources as .pdf.
 
     """
     times_df = pd.read_pickle(
-        f"./resources/times_df_{max_processes_threads}{processes_threads}_per{period}.pickle"
+        f"./resources/times_df_{max_processes_threads}{processes_threads}_{period}.pickle"
     )
 
     # Exclude first time measurement due to numba "burn-in".
@@ -37,19 +37,17 @@ def plot_time(processes_threads, max_processes_threads, period=""):
     fig, ax = plt.subplots(1, 1)
     ax.plot(xs, ys)
 
-    # Axis label and formatting.
     ax.set_xlabel(f"Number of {processes_threads}")
     ax.set_ylabel("Microseconds")
     ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     ax.get_yaxis().set_major_formatter(FuncFormatter(lambda x, p: format(int(x), ",")))
 
-    # Save or show.
     if len(sys.argv) > 1 and sys.argv[1] == "show":
         plt.show()
     else:
         fig.savefig(
             f"./resources/figure_time_{max_processes_threads}"
-            + f"{processes_threads}_per{period}.pdf",
+            + f"{processes_threads}_{period}.pdf",
             bbox_inches="tight",
         )
 
