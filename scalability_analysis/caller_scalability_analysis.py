@@ -64,7 +64,7 @@ if __name__ == "__main__":
         SCALABILITY_ANALYSIS = "processes"
 
     check = Path(
-        f"./resources/times_df_"
+        "./resources/times_df_"
         + str(MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS])
         + f"{SCALABILITY_ANALYSIS}_{PERIOD}.{DATA_FORMAT}"
     )
