@@ -24,14 +24,14 @@ if SCALABILITY_ANALYSIS == "threads":
     os.environ.update(update_)
 
 import datetime
-import numpy as np
+import pickle
 import pandas as pd
 from config import ITERATIONS
 from config import MAX_THREADS_PROCESSES
 from config import PERIOD
-from respy.solve import _full_solution
 from caller_scalability_analysis import PATH_AUXINPUT_PARAMS
 from caller_scalability_analysis import SCALABILITY_ANALYSIS
+from respy.solve import _full_solution
 
 
 if __name__ == "__main__":
@@ -39,7 +39,7 @@ if __name__ == "__main__":
     if SCALABILITY_ANALYSIS == "processes" and len(sys.argv) > 1:
         num_processes = int(sys.argv[1])
 
-    input_params = np.load(PATH_AUXINPUT_PARAMS, allow_pickle=True).item()
+    input_params = pickle.load(open(PATH_AUXINPUT_PARAMS, "rb"))
 
     times = []
     for _j in range(ITERATIONS[SCALABILITY_ANALYSIS]):

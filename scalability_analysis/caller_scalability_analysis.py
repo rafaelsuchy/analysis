@@ -1,16 +1,17 @@
 """Caller for execution time evaluation under different number of threads and/or processes."""
 import os
+import pickle
 import subprocess
 import sys
 from pathlib import Path
 
-import numpy as np
+from config import DATA_FORMAT
 from config import INPUT_DATA
 from config import MAX_THREADS_PROCESSES
 from config import PERIOD
 
 SCALABILITY_ANALYSIS = "threads"  # @["threads", "processes"]
-PATH_AUXINPUT_PARAMS = Path("./resources/sliced_input_params.npy")
+PATH_AUXINPUT_PARAMS = Path(f"./resources/sliced_input_params.{DATA_FORMAT}")
 
 
 def caller_exec_time_threads(MAX_THREADS):
@@ -63,14 +64,15 @@ if __name__ == "__main__":
         SCALABILITY_ANALYSIS = "processes"
 
     check = Path(
-        f"./resources/times_df_{SCALABILITY_ANALYSIS}_"
+        f"./resources/times_df_"
         + str(MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS])
-        + ".pickle"
+        + f"{SCALABILITY_ANALYSIS}_{PERIOD}.{DATA_FORMAT}"
     )
 
     if not check.exists():
-        input_params = np.load(INPUT_DATA, allow_pickle=True).item()[PERIOD]
-        np.save(PATH_AUXINPUT_PARAMS, input_params, allow_pickle=True)
+
+        input_params = pickle.load(open(INPUT_DATA, "rb"))[PERIOD]
+        pickle.dump(input_params, open(PATH_AUXINPUT_PARAMS, "wb"))
 
         if SCALABILITY_ANALYSIS == "threads":
             caller_exec_time_threads(MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS])
@@ -78,6 +80,11 @@ if __name__ == "__main__":
             caller_exec_time_processes(MAX_THREADS_PROCESSES[SCALABILITY_ANALYSIS])
         else:
             pass
+
+    else:
+        print(
+            "Data set already available. Move, rename or delete to create a new dataset."
+        )
 
     if PATH_AUXINPUT_PARAMS.exists():
         os.remove(PATH_AUXINPUT_PARAMS)
