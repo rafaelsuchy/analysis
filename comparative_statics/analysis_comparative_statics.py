@@ -180,7 +180,7 @@ def plot_effect_ambiguity_choiceshare_kw94(
         ax.set_xticklabels(range(0, 41, 5), rotation="horizontal", ha="center")
 
     fig.savefig(
-        f"fig_choice_patterns_{filename}_kw94.pdf",
+        f"./output/figures/fig_choice_patterns_{filename}_kw94.pdf",
         bbox_extra_artists=(_legend,),
         bbox_inches="tight",
         dpi=300,
@@ -245,7 +245,7 @@ def plot_effect_ambiguity_choiceshare_kw97(
         ax.set_xticklabels(range(0, 41, 5), rotation="horizontal", ha="center")
 
     fig.savefig(
-        f"fig_choice_patterns_{filename}_kw97.pdf",
+        f"./output/figures/fig_choice_patterns_{filename}_kw97.pdf",
         bbox_extra_artists=(_legend,),
         bbox_inches="tight",
         dpi=300,
