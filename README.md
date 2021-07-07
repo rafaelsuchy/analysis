@@ -1,6 +1,6 @@
 # Analysis and Exploration Robust Human Capital Investment
 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+![](https://github.com/structRobustness/analysis/workflows/Continuous%20Integration/badge.svg) [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black) 
 
 This repository contains scripts for the analysis of Robust Human Capital Analysis.
 
